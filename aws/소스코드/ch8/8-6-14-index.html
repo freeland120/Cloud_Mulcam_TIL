@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>번역웹사이트</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col align-self-center">
+            <h5 id="resultText"></h5>
+            <form action="javascript:void(0)">
+                <div class="form-group">
+                    <label>텍스트를 입력해주세요.</label>
+                    <textarea class="form-control" id="textInput" rows="3"></textarea>
+                </div>
+                <button onclick="sendReqeust()" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    var inputSelector = document.querySelector('#textInput');
+    var resultText = document.querySelector('#resultText');
+
+    function sendReqeust() {
+        resultText.innerHTML = "로딩중..."
+        fetch("https://0pmjclpe95.execute-api.ap-northeast-2.amazonaws.com/default/lambda_for_translate_service", {
+            method: "POST",
+            body: JSON.stringify({
+              text:inputSelector.value
+            })
+        }).then(function (response) {
+          return response.text().then(function(text) {
+                resultText.innerHTML = text;
+          });
+        })
+    }
+</script>
+</html>
